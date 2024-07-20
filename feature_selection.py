@@ -30,8 +30,7 @@ def main():
         num_df = preprocessor.scale_data(num_df)
         preprocessor.calculate_variance(num_df)
 
-        # feature_ranker = FeatureRanker(data_loader.config)
-        # feature_ranker.rank_features(df)
+        preprocessor.rank_features(df)
 
     except Exception as e:
         logging.error("An error occurred: %s",str(e))
