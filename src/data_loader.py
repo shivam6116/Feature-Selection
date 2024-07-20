@@ -1,8 +1,9 @@
 '''Data Loader Class'''
 import os
+import logging
+
 import pandas as pd
 import pyarrow.parquet as pq
-import logging
 import yaml
 
 class DataLoader:
