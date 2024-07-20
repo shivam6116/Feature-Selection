@@ -1,8 +1,8 @@
-# Your Project Name
+# Feature Selection
 
 ## Overview
 
-This project is a brief description of what your project does. Explain the key features and purpose of your project here.
+This project aims to implement and demonstrate feature selection techniques using feature ranking and entropy calculations. Feature selection is a crucial step in the data preprocessing stage of machine learning, helping to enhance model performance by reducing overfitting, improving accuracy, and decreasing training time.
 
 ## Table of Contents
 
@@ -17,7 +17,7 @@ This project is a brief description of what your project does. Explain the key f
 
 ### Prerequisites
 
-- Python 3.8 or higher
+- Python 3.11 or higher
 - Poetry
 
 ### Steps
@@ -25,7 +25,7 @@ This project is a brief description of what your project does. Explain the key f
 1. Clone the repository:
 
     ```sh
-    git clone https://github.com/your-username/your-project-name.git
+    git clone https://github.com/shivam6116/Feature-Selection.git
     cd your-project-name
     ```
 
@@ -55,8 +55,8 @@ This project is a brief description of what your project does. Explain the key f
 
 ## Usage
 
-Provide instructions and examples on how to use your project. This might include code snippets, command-line instructions, or links to documentation.
+ Instructions and examples 
 
 ```sh
 # Example command to run your project
-python your_script.py
+python feature_selection.py
