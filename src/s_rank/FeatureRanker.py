@@ -1,7 +1,7 @@
 import pandas as pd 
 import numpy as np 
 import math
-from dataframe_extended import dataframe_ext
+from src.s_rank.dataframe_extended import dataframe_ext
 import warnings
 import concurrent.futures
 warnings.filterwarnings("ignore")

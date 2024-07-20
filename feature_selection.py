@@ -3,8 +3,7 @@
 import logging
 import timeit
 from src.data_loader import DataLoader
-from src.preprocessor import Preprocessor
-# from src.feature_ranker import FeatureRanker
+from src.feature_processor import Featureprocessor
 
 def main():
     '''Orchestrates the workflow'''
@@ -16,7 +15,7 @@ def main():
         df = data_loader.drop_system_columns(df)
 
 
-        preprocessor = Preprocessor(data_loader.config)
+        preprocessor = Featureprocessor(data_loader.config)
         num_df = preprocessor.process_numerical_data(df)
 
 
