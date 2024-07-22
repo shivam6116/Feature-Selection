@@ -4,7 +4,7 @@ data:
   cat_var: ['voice_day_pref' ,'voice_usage_pattern', 'voice_rev_pattern', 'date_key', 'os_name', 'device_category','hs_make','hs_model', 'edge_ind','activation_date','gen_type','gender','activated_via','tariff_code','subscriber_category','subscriber_sub_category']
 
 
-ranking:
+feature_ranking:
   num_sample: 1
   sample_size: 50
   var_type: mixed

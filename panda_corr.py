@@ -35,7 +35,10 @@ sys_col = ['msisdn_key', 'tac', 'date_of_birth', 'id_expiry_date', 'bucket','MoM
 ##################Categorical Column########################
 cat_var = ['data_day_pref','voice_day_pref' ,'voice_usage_pattern', 'voice_rev_pattern', 'date_key', 'os_name', 'device_category','hs_make','hs_model', 'edge_ind','activation_date','gen_type','gender','activated_via','tariff_code','subscriber_category','subscriber_sub_category']
 
-pd_df.describe().to_csv("pd_summary.csv")
+pd_df.describe().to_csv("data_distribution.csv")
+'''
+take location were u want to save from config
+'''
 
 #######################Numerical columns for correlation matrix##########
 
@@ -49,7 +52,7 @@ start_time = timeit.default_timer()
 correlation_matrix = num_df.corr()
 
 # Save the correlation matrix to a CSV file
-correlation_matrix.to_csv('panda_corr_matrix.csv', index=True)
+correlation_matrix.to_csv('data_correlation.csv', index=True)
 
 end_time = timeit.default_timer()
 print("Time taken in Correlation",end_time-start_time)
@@ -59,7 +62,7 @@ scaler = MinMaxScaler()
 scaled_values = scaler.fit_transform(num_df)
 num_df = pd.DataFrame(scaled_values, columns=num_df.columns)
 var = num_df.var()
-var.to_csv("var.csv")
+var.to_csv("data_variance.csv")
 
 ###############Compute Feature Entropy#############################
 from FeatureRanker import SRANK
