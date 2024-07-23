@@ -6,7 +6,7 @@ import pandas as pd
 import pyarrow.parquet as pq
 import yaml
 
-class DataLoader:
+class DataHandler:
     '''Data Loader Class'''
     def __init__(self, config_path):
         self.config = self._load_config(config_path)

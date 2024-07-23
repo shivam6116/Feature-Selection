@@ -1,8 +1,11 @@
 data:
-  parquet_dir: "C:\\Users\\Administrator\\Desktop\\Project\\Feature-Selection\\data_sets"
   sys_col: ['msisdn_key', 'tac', 'date_of_birth', 'id_expiry_date', 'bucket', 'CrossServiceRatio', 'voice_centric_perc']
   cat_var: ['voice_day_pref' ,'voice_usage_pattern', 'voice_rev_pattern', 'date_key', 'os_name', 'device_category','hs_make','hs_model', 'edge_ind','activation_date','gen_type','gender','activated_via','tariff_code','subscriber_category','subscriber_sub_category']
 
+directory:
+  parquet: "C:\\Users\\Administrator\\Desktop\\Project\\Feature-Selection\\data_sets"
+  output: "C:\\Users\\Administrator\\Desktop\\Project\\Feature-Selection\\data_sets\\download"
+  
 
 feature_ranking:
   num_sample: 1

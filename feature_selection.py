@@ -2,7 +2,7 @@
 
 import logging
 import timeit
-from src.data_loader import DataLoader
+from src.data_handler import DataHandler
 from src.feature_processor import Featureprocessor
 
 def main():
@@ -10,12 +10,12 @@ def main():
     try:
         config_path = 'config.yaml'
 
-        data_loader = DataLoader(config_path)
-        df = data_loader.load_dataset()
-        df = data_loader.drop_system_columns(df)
+        data_handler = DataHandler(config_path)
+        df = data_handler.load_dataset()
+        df = data_handler.drop_system_columns(df)
 
 
-        preprocessor = Featureprocessor(data_loader.config)
+        preprocessor = Featureprocessor(data_handler.config)
         num_df = preprocessor.process_numerical_data(df)
 
 
