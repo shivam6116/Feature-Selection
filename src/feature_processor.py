@@ -11,6 +11,7 @@ class Featureprocessor:
     '''Preprocessor Class'''
     def __init__(self, config):
         self.cat_var = config['data']['cat_var']
+        self.sys_col = config['data']['sys_col']
         self.num_sample = config['ranking']['num_sample']
         self.sample_size = config['ranking']['sample_size']
         self.var_type = config['ranking']['var_type']
@@ -23,7 +24,7 @@ class Featureprocessor:
         srank = SRANK()
         rank = srank.apply(df_big=df,
                            vars_type=self.var_type,
-                           discrete_var_list=self.cat_var, 
+                           discrete_var_list=self.cat_var,
                            clean_bool=False,
                            rescale_bool=False, 
                            N_SAMPLE=self.num_sample,
@@ -42,6 +43,15 @@ class Featureprocessor:
             # Numerical columns
             df = df.drop(self.cat_var, axis=1)
         return df
+
+
+    def drop_system_columns(self, df)-> pd.DataFrame:
+        '''Drops the system columns from the dataframe'''
+
+        df = df.drop(self.sys_col, axis=1)
+        logging.info("Dropped system columns")
+        return df
+
 
     def scale_data(self, df)->pd.DataFrame:
         '''Scale the numerical data using MinMaxScaler'''

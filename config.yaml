@@ -2,9 +2,20 @@ data:
   sys_col: ['msisdn_key', 'tac', 'date_of_birth', 'id_expiry_date', 'bucket', 'CrossServiceRatio', 'voice_centric_perc']
   cat_var: ['voice_day_pref' ,'voice_usage_pattern', 'voice_rev_pattern', 'date_key', 'os_name', 'device_category','hs_make','hs_model', 'edge_ind','activation_date','gen_type','gender','activated_via','tariff_code','subscriber_category','subscriber_sub_category']
 
+output_files:
+    pd_summary: "pd_summary.csv"
+    travel_segment_summary: "Travel_segment_summary.csv"
+    travel_segment_var: "Travel_segment_var.csv"
+    travel_corr_matrix: "Travel_corr_matrix.csv"
+    non_travel_segment_summary: "Non_Travel_segment_summary.csv"
+    non_travel_segment_var: "Non_Travel_segment_var.csv"
+    non_travel_corr_matrix: "Non_Travel_corr_matrix.csv"
+    travel_feature_importance: "Travel_featureimp.csv"
+
 directory:
   parquet: "C:\\Users\\Administrator\\Desktop\\Project\\Feature-Selection\\data_sets"
   output: "C:\\Users\\Administrator\\Desktop\\Project\\Feature-Selection\\data_sets\\download"
+  location: "C:\\Users\\Administrator\\Desktop\\Project\\Feature-Selection\\data_sets\\location"
   
 
 feature_ranking:
@@ -15,3 +26,11 @@ feature_ranking:
 logging:
   level: INFO
   filename: logs/app.log
+
+claude:
+  key: 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
+
+model:
+  n_estimators: 100
+  test_size: 0.3
+  random_state: 42

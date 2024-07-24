@@ -10,9 +10,9 @@ class DataHandler:
     '''Data Loader Class'''
     def __init__(self, config_path):
         self.config = self._load_config(config_path)
-        self.parquet_dir = self.config['data']['parquet_dir']
-        self.sys_col = self.config['data']['sys_col']
-        self.cat_var = self.config['data']['cat_var']
+        self.parquet_dir = self.config['directory']['parquet']
+        self.output_dir = self.config['directory']['output']
+        self.location_dir = self.config['directory']['location']
         self._setup_logging()
 
 
@@ -32,7 +32,7 @@ class DataHandler:
 
     def load_dataset(self)-> pd.DataFrame:
         '''Loads the parquet dataset from directory and returns it as a pandas dataframe'''
-
+        print(self.config['directory']['parquet'])
         if not os.path.exists(self.parquet_dir):
             logging.error("Directory not found: %s",self.parquet_dir)
             raise FileNotFoundError(f"Directory not found: {self.parquet_dir}")
@@ -41,11 +41,4 @@ class DataHandler:
         df = dataset.read_pandas().to_pandas()
         logging.info("Loaded data from %s",self.parquet_dir)
 
-        return df
-
-    def drop_system_columns(self, df)-> pd.DataFrame:
-        '''Drops the system columns from the dataframe'''
-
-        df = df.drop(self.sys_col, axis=1)
-        logging.info("Dropped system columns")
         return df
