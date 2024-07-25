@@ -74,18 +74,15 @@ class Featureprocessor:
         return df
 
 
-    def merge_dataframes(self, left_df, right_df, join_column, join_type="left"):
+    def merge_dataframes(self,
+                         left_df:pd.DataFrame,
+                         right_df:pd.DataFrame,
+                         join_column:list,
+                         join_type="left")->pd.DataFrame:
         """Merges two DataFrames on the specified column(s) using the specified join type."""
-        if not isinstance(left_df, pd.DataFrame):
-            raise ValueError("left_df must be a pandas DataFrame")
-        if not isinstance(right_df, pd.DataFrame):
-            raise ValueError("right_df must be a pandas DataFrame")
-        if not isinstance(join_column, (str, list)):
-            raise ValueError("join_column must be a string or a list of strings")
-        if not isinstance(join_type, str):
-            raise ValueError("join_type must be a string")
-
+        
         merged_df = pd.merge(left_df, right_df, how=join_type, on=join_column)
+        merged_df= self.drop_selective_columns(merged_df, join_column)
         logging.info("Data Frames merged successfully")
 
         return merged_df

@@ -35,3 +35,10 @@ model:
   n_estimators: 100
   test_size: 0.3
   random_state: 42
+
+segment:
+  colum1: "RechargeAmt"
+  quantile1: 0.75
+  column2: "temporal_variability_index"
+  quantile2: 0.75
+  new_column: "IrregularRecharge"
