@@ -10,9 +10,6 @@ class DataHandler:
     '''Data Loader Class'''
     def __init__(self, config_path):
         self.config = self._load_config(config_path)
-        self.parquet_dir = self.config['directory']['parquet']
-        self.output_dir = self.config['directory']['output']
-        self.location_dir = self.config['directory']['location']
 
 
     def _load_config(self, config_path :str) -> dict:
@@ -35,7 +32,7 @@ class DataHandler:
         logging.info("Loaded data from %s",dir_path)
 
         return df
-    
+
     @staticmethod
     def download_dataframe( df: pd.DataFrame, file_name: str, output_dir: str) -> None:
         '''Downloads the dataframe as a CSV file in the specified output directory'''

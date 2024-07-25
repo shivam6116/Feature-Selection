@@ -37,7 +37,7 @@ class Featureprocessor:
         logging.info("Ranked features and saved to feature_importance.csv")
 
 
-    def process_numerical_data(self, df)->pd.DataFrame:
+    def drop_catagorical_data(self, df)->pd.DataFrame:
         '''Returns the dataframe with only the numerical columns by dropping categorical columns'''
         if self.cat_var != 'None':
             # Numerical columns

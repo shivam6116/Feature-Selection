@@ -11,12 +11,12 @@ def main():
         config_path = 'config.yaml'
 
         data_handler = DataHandler(config_path)
-        df = data_handler.load_dataset()
-        df = data_handler.drop_system_columns(df)
+        df = data_handler.load_dataset(data_handler.config['directory']['parquet'])
 
 
         preprocessor = Featureprocessor(data_handler.config)
-        num_df = preprocessor.process_numerical_data(df)
+        df = preprocessor.drop_system_columns(df)
+        num_df = preprocessor.drop_catagorical_data(df)  #'''discussion pattern is different'''
 
 
         # Calculate correlation matrix
