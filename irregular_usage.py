@@ -5,6 +5,7 @@ import timeit
 from src.data_handler import DataHandler
 from src.feature_processor import Featureprocessor
 from src.utils.segments import Segmenter
+from src.models.random_forest import RandomForest
 
 def main():
     '''Orchestrates the workflow'''
@@ -32,6 +33,10 @@ def main():
         
         Segmenter.create_segments(merged_df, data_handler.config)
         Segmenter.save_segment_stats(merged_df, data_handler.config)
+
+        # ML Part
+        rf_model = RandomForest(data_handler.config)
+        rf_model.train(merged_df)
 
 
 

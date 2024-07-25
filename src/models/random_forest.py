@@ -22,6 +22,7 @@ class RandomForest:
         self.model = RandomForestClassifier(
             n_estimators=self.n_estimators, random_state=self.random_state
         )
+        self.drop_cols = config['model']['drop_col']
 
     def train(self, pd_df: pd.DataFrame) -> None:
         """ Trains the Random Forest Classifier and evaluates its performance."""
@@ -31,7 +32,7 @@ class RandomForest:
         )
 
         self.model.fit(x_train, y_train)
-        self._save_feature_importance(pd_df.columns.drop(['HighTraveller', 'avg_site_dist_day_night', 'location_diversity_index']))
+        self._save_feature_importance(pd_df.columns.drop(self.drop_cols))
 
         y_pred = self.model.predict(x_test)
         self._evaluate_model(y_test, y_pred)

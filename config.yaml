@@ -32,6 +32,7 @@ model:
   n_estimators: 100
   test_size: 0.3
   random_state: 42
+  drop_col: ['HighTraveller', 'avg_site_dist_day_night', 'location_diversity_index']
 
 segment:
   dist_col: "RechargeAmt"
