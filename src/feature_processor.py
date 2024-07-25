@@ -10,11 +10,11 @@ from src.s_rank.FeatureRanker import SRANK
 class Featureprocessor:
     '''Preprocessor Class'''
     def __init__(self, config):
-        self.cat_var = config['data']['cat_var']
-        self.sys_col = config['data']['sys_col']
-        self.num_sample = config['ranking']['num_sample']
-        self.sample_size = config['ranking']['sample_size']
-        self.var_type = config['ranking']['var_type']
+        self.cat_var = config['data']['exclude']['cat_var']
+        self.sys_col = config['data']['exclude']['sys_col']
+        self.num_sample = config['feature_ranking']['num_sample']
+        self.sample_size = config['feature_ranking']['sample_size']
+        self.var_type = config['feature_ranking']['var_type']
 
     def rank_features(self, df):
         '''Ranks the features using SRANK and saves it to a csv'''
@@ -68,9 +68,9 @@ class Featureprocessor:
         logging.info("Calculated variance and saved to var.csv")
 
 
-    def drop_selective_columns(self, df:pd.DataFrame, cols:list)->pd.DataFrame:
+    def include_selective_columns(self, df:pd.DataFrame, cols:list)->pd.DataFrame:
         '''Returns the dataframe with only the selected columns'''
-        df= df.drop(cols, axis=1)
+        df= df[cols]
         return df
 
 
@@ -80,9 +80,9 @@ class Featureprocessor:
                          join_column:str,
                          join_type="left")->pd.DataFrame:
         """Merges two DataFrames on the specified column(s) using the specified join type."""
-        
+
         merged_df = pd.merge(left_df, right_df, how=join_type, on=join_column)
-        merged_df= self.drop_selective_columns(merged_df, join_column)
+        # merged_df= self.drop_selective_columns(merged_df, join_column)
         merged_df= merged_df.drop(join_column, axis=1)
         logging.info("Data Frames merged successfully")
 

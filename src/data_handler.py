@@ -6,10 +6,13 @@ import pandas as pd
 import pyarrow.parquet as pq
 import yaml
 
+from src.utils.logger import Logger
+
 class DataHandler:
     '''Data Loader Class'''
     def __init__(self, config_path):
         self.config = self._load_config(config_path)
+        self._setup_logging()
 
 
     def _load_config(self, config_path :str) -> dict:
@@ -19,8 +22,13 @@ class DataHandler:
         return config
 
 
+    def _setup_logging(self)-> None:
+        '''Sets up the logging configuration'''
+        Logger.setup_logging(self.config)
+        logging.info("Config loaded")
 
-    def load_dataset(self,dir_path:str)-> pd.DataFrame:
+
+    def load_dataset(self, dir_path:str)-> pd.DataFrame:
         '''Loads the parquet dataset from directory and returns it as a pandas dataframe'''
 
         if not os.path.exists(dir_path):
