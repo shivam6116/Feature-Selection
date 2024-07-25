@@ -1,16 +1,11 @@
 data:
   exclude:
-    sys_col: ['msisdn_key', 'tac', 'date_of_birth', 'id_expiry_date', 'bucket', 'CrossServiceRatio', 'voice_centric_perc']
+    sys_col: [ 'tac', 'date_of_birth', 'id_expiry_date', 'bucket', 'CrossServiceRatio', 'voice_centric_perc']
     cat_var: ['voice_day_pref' ,'voice_usage_pattern', 'voice_rev_pattern', 'date_key', 'os_name', 'device_category','hs_make','hs_model', 'edge_ind','activation_date','gen_type','gender','activated_via','tariff_code','subscriber_category','subscriber_sub_category']
   include:
-    loc_col: ["msisdn_key", "weekday_weekend_diff_site_dist_mu_day","weekday_weekend_diff_site_dist_mu_night", "avg_site_dist_mu_day","avg_site_dist_mu_night","avg_site_dist_day_night","location_diversity_index", "average_distance", "temporal_variability_index"]
-    loc_col1: ['msisdn_key', 'VoiceRev', 'DataRev', 'TotalRevenue', 'VoiceOutMins',
-       'DataUsageMb', 'RechargeAmt', 'VoiceDOU', 'BalanceDaily', 'MomoBalance',
-       'dola', 'Avg_dola', 'DataDOU', 'RechargeEvents', 'CallDuration',
-       'Onnet_Ratio', 'Int_Ratio', 'Inc_Out_Ratio', 'voice_day_pref',
-       'voice_centric_perc', 'TotalMinutes', 'CrossServiceRatio',
-       'WeekendToWeekdayVoiceRatio', 'RoamingVoiceUsageIntensity',
-       'voice_usage_pattern']
+    loc_col1: ["msisdn_key", "weekday_weekend_diff_site_dist_mu_day","weekday_weekend_diff_site_dist_mu_night", "avg_site_dist_mu_day","avg_site_dist_mu_night","avg_site_dist_day_night","location_diversity_index", "average_distance", "temporal_variability_index"]
+    loc_col: ['msisdn_key', 'VoiceRev', 'DataRev', 'TotalRevenue', 'VoiceOutMins',
+       'DataUsageMb', 'RechargeAmt', 'VoiceDOU', 'BalanceDaily']
 
 output_files:
     pd_summary: "pd_summary.csv"
@@ -24,7 +19,7 @@ output_files:
 
 directory:
   parquet: "C:\\Users\\Administrator\\Desktop\\Project\\Feature-Selection\\data_sets"
-  output: "C:\\Users\\Administrator\\Desktop\\Project\\Feature-Selection\\data_sets\\download"
+  output: "C:\\Users\\Administrator\\Desktop\\Project\\Feature-Selection\\download"
   location: "C:\\Users\\Administrator\\Desktop\\Project\\Feature-Selection\\data_sets\\location"
   
 
@@ -44,8 +39,8 @@ model:
   drop_col: ['HighTraveller', 'avg_site_dist_day_night', 'location_diversity_index']
 
 segment:
-  dist_col: "RechargeAmt"
+  dist_col: "TotalRevenue_y"
   quantile1: 0.75
-  div_col: "temporal_variability_index"
+  div_col: "BalanceDaily_y"
   quantile2: 0.75
   seg_col: "IrregularRecharge"

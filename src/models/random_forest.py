@@ -10,6 +10,8 @@ from sklearn.metrics import (precision_score,
                              accuracy_score,
                              classification_report)
 
+from src.data_handler import DataHandler
+
 class RandomForest:
     """Random Forest Classifier for telecom data analysis."""
 
@@ -17,12 +19,16 @@ class RandomForest:
         self.n_estimators = config['model']['n_estimators']
         self.test_size = config['model']['test_size']
         self.random_state = config['model']['random_state']
-        self.file_name = config['data']['output_files']['travel_feature_importance']
+        self.file_name = config['output_files']['travel_feature_importance']
         self.scaler = StandardScaler()
         self.model = RandomForestClassifier(
             n_estimators=self.n_estimators, random_state=self.random_state
         )
         self.drop_cols = config['model']['drop_col']
+        self.new_column = config['segment']['seg_col']
+        self.file_name = config['output_files']['travel_segment_summary'],
+        self.output_dir = config['directory']['output'],
+                                       
 
     def train(self, pd_df: pd.DataFrame) -> None:
         """ Trains the Random Forest Classifier and evaluates its performance."""
@@ -39,8 +45,8 @@ class RandomForest:
 
     def _prepare_data(self, pd_df: pd.DataFrame) -> tuple[pd.DataFrame, pd.Series]:
         """ Prepares the data for training by scaling the features."""
-        X = pd_df.drop(columns=['HighTraveller', 'avg_site_dist_day_night', 'location_diversity_index'])
-        y = pd_df['HighTraveller']
+        X = pd_df.drop(self.drop_cols)
+        y = pd_df[self.new_column]
         X_scaled = self.scaler.fit_transform(X)
         return X_scaled, y
 
@@ -84,5 +90,7 @@ class RandomForest:
         class_report_df = pd.DataFrame(class_report).transpose()
         combined_df = pd.concat([metrics_df, class_report_df], axis=0)
 
-        combined_df.to_csv(file_path, index=True)
+        DataHandler.download_dataframe(combined_df,
+                                       self.file_name,
+                                       self.output_dir)
         logging.info(f"Metrics saved to {file_path}")
