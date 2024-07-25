@@ -37,6 +37,7 @@ model:
   test_size: 0.3
   random_state: 42
   drop_col: ['HighTraveller', 'avg_site_dist_day_night', 'location_diversity_index']
+  feture_imp_file: 'featureimp.csv'
 
 segment:
   dist_col: "TotalRevenue_y"

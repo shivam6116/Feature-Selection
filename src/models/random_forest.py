@@ -26,9 +26,9 @@ class RandomForest:
         )
         self.drop_cols = config['model']['drop_col']
         self.new_column = config['segment']['seg_col']
-        self.file_name = config['output_files']['travel_segment_summary'],
-        self.output_dir = config['directory']['output'],
-                                       
+        self.output_dir = config['directory']['output']
+        self.imp_file = config['model']['feture_imp_file']
+
 
     def train(self, pd_df: pd.DataFrame) -> None:
         """ Trains the Random Forest Classifier and evaluates its performance."""
@@ -45,10 +45,10 @@ class RandomForest:
 
     def _prepare_data(self, pd_df: pd.DataFrame) -> tuple[pd.DataFrame, pd.Series]:
         """ Prepares the data for training by scaling the features."""
-        X = pd_df.drop(self.drop_cols)
-        y = pd_df[self.new_column]
-        X_scaled = self.scaler.fit_transform(X)
-        return X_scaled, y
+        feature_var = pd_df.drop(self.drop_cols)
+        target_var = pd_df[self.new_column]
+        feature_scaled = self.scaler.fit_transform(feature_var)
+        return feature_scaled, target_var
 
     def _save_feature_importance(self, feature_names: pd.Index) -> None:
         """ Saves the feature importances to a CSV file."""
@@ -57,9 +57,11 @@ class RandomForest:
             'feature': feature_names,
             'importance': feature_importances
         }).sort_values(by='importance', ascending=False)
-        
-        importance_df.to_csv(self.file_name, index=False)
-        logging.info(f"Feature importances saved to {self.file_name}")
+
+        DataHandler.download_dataframe(importance_df,
+                                       self.imp_file,
+                                       self.output_dir)
+        logging.info("Feature importances saved to %s ",self.imp_file)
 
 
     def _evaluate_model(self, y_test: pd.Series, y_pred: pd.Series) -> None:
