@@ -4,6 +4,7 @@ import logging
 import timeit
 from src.data_handler import DataHandler
 from src.feature_processor import Featureprocessor
+from src.utils.segments import Segmenter
 
 def main():
     '''Orchestrates the workflow'''
@@ -18,23 +19,21 @@ def main():
         feature = Featureprocessor(data_handler.config)
         summary_df = feature.drop_system_columns(summary_df)
         summary_df = feature.drop_catagorical_data(summary_df)
-        location_df= feature.drop_selective_columns(location_df,data_handler.config['data']['loc_col'])
+        # '''Select'''
+        location_df= feature.drop_selective_columns(location_df,
+                                                    data_handler.config['data']['loc_col'])
 
-        merged_df = feature.merge_dataframes(summary_df,location_df, join_type="left", join_column=["msisdn_key"])
+        merged_df = feature.merge_dataframes(summary_df,location_df,
+                                             join_type="left", join_column="msisdn_key")
+        DataHandler.download_dataframe(merged_df,
+                                       'dataframe.csv',
+                                       data_handler.config['directory']['output'],
+                                       describe=True)
+        
+        Segmenter.create_segments(merged_df, data_handler.config)
+        Segmenter.save_segment_stats(merged_df, data_handler.config)
 
 
-        # Calculate correlation matrix
-        start_time = timeit.default_timer()
-        correlation_matrix = num_df.corr()
-        correlation_matrix.to_csv('panda_corr_matrix.csv', index=True)
-        end_time = timeit.default_timer()
-        logging.info("Time taken in correlation: %s",(end_time - start_time))
-
-        # Scale data, calculate variance and save to csv
-        num_df = feature.scale_data(num_df)
-        feature.calculate_variance(num_df)
-
-        feature.rank_features(df)
 
     except Exception as e:
         logging.error("An error occurred: %s",str(e))

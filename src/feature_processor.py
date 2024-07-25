@@ -77,12 +77,13 @@ class Featureprocessor:
     def merge_dataframes(self,
                          left_df:pd.DataFrame,
                          right_df:pd.DataFrame,
-                         join_column:list,
+                         join_column:str,
                          join_type="left")->pd.DataFrame:
         """Merges two DataFrames on the specified column(s) using the specified join type."""
         
         merged_df = pd.merge(left_df, right_df, how=join_type, on=join_column)
         merged_df= self.drop_selective_columns(merged_df, join_column)
+        merged_df= merged_df.drop(join_column, axis=1)
         logging.info("Data Frames merged successfully")
 
         return merged_df

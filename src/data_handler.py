@@ -34,12 +34,17 @@ class DataHandler:
         return df
 
     @staticmethod
-    def download_dataframe( df: pd.DataFrame, file_name: str, output_dir: str) -> None:
+    def download_dataframe(df: pd.DataFrame, file_name: str,
+                           output_dir: str, describe: bool = False) -> None:
         '''Downloads the dataframe as a CSV file in the specified output directory'''
 
         if not os.path.exists(output_dir):
             os.makedirs(output_dir)
-        file_path = os.path.join(output_dir, file_name)
 
+        if describe:
+            df = df.describe()
+
+        file_path = os.path.join(output_dir, file_name)
         df.to_csv(file_path, index=True)
-        logging.info("Downloaded %s File in %s",file_name, output_dir)
+
+        logging.info("Downloaded %s File in %s", file_name, output_dir)

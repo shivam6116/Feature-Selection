@@ -28,17 +28,14 @@ logging:
   level: INFO
   filename: logs/app.log
 
-claude:
-  key: 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
-
 model:
   n_estimators: 100
   test_size: 0.3
   random_state: 42
 
 segment:
-  colum1: "RechargeAmt"
+  dist_col: "RechargeAmt"
   quantile1: 0.75
-  column2: "temporal_variability_index"
+  div_col: "temporal_variability_index"
   quantile2: 0.75
-  new_column: "IrregularRecharge"
+  seg_col: "IrregularRecharge"
