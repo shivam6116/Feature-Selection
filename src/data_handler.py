@@ -13,7 +13,6 @@ class DataHandler:
         self.parquet_dir = self.config['directory']['parquet']
         self.output_dir = self.config['directory']['output']
         self.location_dir = self.config['directory']['location']
-        self._setup_logging()
 
 
     def _load_config(self, config_path :str) -> dict:
@@ -23,22 +22,27 @@ class DataHandler:
         return config
 
 
-    def _setup_logging(self)-> None:
-        '''Sets up the logging configuration'''
-        logging.basicConfig(filename=self.config['logging']['filename'],
-                            level=self.config['logging']['level'],
-                            format='%(asctime)s:%(levelname)s:%(message)s')
 
-
-    def load_dataset(self)-> pd.DataFrame:
+    def load_dataset(self,dir_path:str)-> pd.DataFrame:
         '''Loads the parquet dataset from directory and returns it as a pandas dataframe'''
-        print(self.config['directory']['parquet'])
-        if not os.path.exists(self.parquet_dir):
-            logging.error("Directory not found: %s",self.parquet_dir)
-            raise FileNotFoundError(f"Directory not found: {self.parquet_dir}")
 
-        dataset = pq.ParquetDataset(self.parquet_dir)
+        if not os.path.exists(dir_path):
+            logging.error("Directory not found: %s",dir_path)
+            raise FileNotFoundError(f"Directory not found: {dir_path}")
+
+        dataset = pq.ParquetDataset(dir_path)
         df = dataset.read_pandas().to_pandas()
-        logging.info("Loaded data from %s",self.parquet_dir)
+        logging.info("Loaded data from %s",dir_path)
 
         return df
+    
+    @staticmethod
+    def download_dataframe( df: pd.DataFrame, file_name: str, output_dir: str) -> None:
+        '''Downloads the dataframe as a CSV file in the specified output directory'''
+
+        if not os.path.exists(output_dir):
+            os.makedirs(output_dir)
+        file_path = os.path.join(output_dir, file_name)
+
+        df.to_csv(file_path, index=True)
+        logging.info("Downloaded %s File in %s",file_name, output_dir)
