@@ -3,11 +3,13 @@
 import numpy as np
 import pandas as pd
 
+from src.data_handler import DataHandler
+
 class Segmenter:
     '''Segmenter Class'''
 
     @staticmethod
-    def create_segments(self, df: pd.DataFrame, dist_col: str, div_col: str,
+    def create_segments( df: pd.DataFrame, dist_col: str, div_col: str,
                         new_col: str, quantile1: float, quantile2: float) -> pd.DataFrame:
         """Adds a New column to the DataFrame based on the quantile percentile thresholds"""
 
@@ -29,18 +31,24 @@ class Segmenter:
 
         seg_col= config['segment']['seg_col']
         rslt_segment = df.query(f"{seg_col}==1")
-        rslt_segment.describe().to_csv(config['data']['output_files']['travel_segment_summary'])
-        rslt_segment.var().to_csv(config['data']['output_files']['travel_segment_var'])
-        rslt_segment.corr().to_csv(config['data']['output_files']['travel_corr_matrix'])
+
+        DataHandler.download_dataframe(rslt_segment,
+                                       config['output_files']['travel_segment_summary'],
+                                       config['directory']['output'],
+                                       describe=True)
+        rslt_segment.corr().to_csv(config['output_files']['travel_corr_matrix'])
+
+        rslt_segment.var().to_csv(config['output_files']['travel_segment_var'])
+
 
         non_segment = df.query(f"{seg_col}==0")
-        non_segment.describe().to_csv(config['data']['output_files']['non_travel_segment_summary'])
-        non_segment.var().to_csv(config['data']['output_files']['non_travel_segment_var'])
-        non_segment.corr().to_csv(config['data']['output_files']['non_travel_corr_matrix'])
+        non_segment.describe().to_csv(config['output_files']['non_travel_segment_summary'])
+        non_segment.var().to_csv(config['output_files']['non_travel_segment_var'])
+        non_segment.corr().to_csv(config['output_files']['non_travel_corr_matrix'])
 
         return rslt_segment, non_segment
 
-    def segDefFunc():
+def segDefFunc():
         rechargeEvents75th = combinedMetrics['RechargeEvents'].quantile(0.75)
         rechargeAmt25th = combinedMetrics['RechargeAmt'].quantile(0.25)
         
