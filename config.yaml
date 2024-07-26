@@ -1,11 +1,36 @@
-data:
+download_dir: "C:\\Users\\Administrator\\Desktop\\Project\\Feature-Selection\\download"
+
+logging:
+  level: INFO
+  filename: logs/app.log
+
+dataset1:
+  dir_path: "C:\\Users\\Administrator\\Desktop\\Project\\Feature-Selection\\data_sets"
   exclude:
-    sys_col: [ 'tac', 'date_of_birth', 'id_expiry_date', 'bucket', 'CrossServiceRatio', 'voice_centric_perc']
+    sys_var: [ 'tac', 'date_of_birth', 'id_expiry_date', 'bucket', 'CrossServiceRatio', 'voice_centric_perc']
     cat_var: ['voice_day_pref' ,'voice_usage_pattern', 'voice_rev_pattern', 'date_key', 'os_name', 'device_category','hs_make','hs_model', 'edge_ind','activation_date','gen_type','gender','activated_via','tariff_code','subscriber_category','subscriber_sub_category']
   include:
-    loc_col1: ["msisdn_key", "weekday_weekend_diff_site_dist_mu_day","weekday_weekend_diff_site_dist_mu_night", "avg_site_dist_mu_day","avg_site_dist_mu_night","avg_site_dist_day_night","location_diversity_index", "average_distance", "temporal_variability_index"]
-    loc_col: ['msisdn_key', 'VoiceRev', 'DataRev', 'TotalRevenue', 'VoiceOutMins',
-       'DataUsageMb', 'RechargeAmt', 'VoiceDOU', 'BalanceDaily']
+    inc_var: []
+
+dataset2:
+  dir_path: "C:\\Users\\Administrator\\Desktop\\Project\\Feature-Selection\\data_sets\\location"
+  exclude:
+    sys_var: []
+    cat_var: []
+  include:
+    inc_var: ['msisdn_key', 'VoiceRev', 'DataRev', 'TotalRevenue', 'VoiceOutMins', 'DataUsageMb', 'RechargeAmt', 'VoiceDOU', 'BalanceDaily']
+
+merge:
+  join_type: "left"
+  join_column: "msisdn_key"
+  merge_file: "merged_dataframe.csv"
+
+segment:
+  dist_col: "TotalRevenue_y"
+  quantile1: 0.75
+  div_col: "BalanceDaily_y"
+  quantile2: 0.75
+  seg_col: "IrregularRecharge"
 
 output_files:
     pd_summary: "pd_summary.csv"
@@ -17,20 +42,10 @@ output_files:
     non_travel_corr_matrix: "Non_Travel_corr_matrix.csv"
     travel_feature_importance: "Travel_featureimp.csv"
 
-directory:
-  parquet: "C:\\Users\\Administrator\\Desktop\\Project\\Feature-Selection\\data_sets"
-  output: "C:\\Users\\Administrator\\Desktop\\Project\\Feature-Selection\\download"
-  location: "C:\\Users\\Administrator\\Desktop\\Project\\Feature-Selection\\data_sets\\location"
-  
-
 feature_ranking:
   num_sample: 1
   sample_size: 50
   var_type: mixed
-
-logging:
-  level: INFO
-  filename: logs/app.log
 
 model:
   n_estimators: 100
@@ -39,9 +54,3 @@ model:
   drop_col: ['HighTraveller', 'avg_site_dist_day_night', 'location_diversity_index']
   feture_imp_file: 'featureimp.csv'
 
-segment:
-  dist_col: "TotalRevenue_y"
-  quantile1: 0.75
-  div_col: "BalanceDaily_y"
-  quantile2: 0.75
-  seg_col: "IrregularRecharge"

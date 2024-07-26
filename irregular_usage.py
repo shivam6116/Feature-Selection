@@ -1,7 +1,6 @@
 '''Entry point for the Irregular usage.'''
 
 import logging
-import timeit
 from src.data_handler import DataHandler
 from src.feature_processor import Featureprocessor
 from src.utils.segments import Segmenter
@@ -15,24 +14,29 @@ def main():
         data_handler = DataHandler(config_path)
         config = data_handler.config
 
-        summary_df = data_handler.load_dataset(config['directory']['parquet'])
-        location_df = data_handler.load_dataset(config['directory']['location'])
-
+        df_1 = data_handler.load_dataset(config['dataset1']['dir_path'])
+        df_2 = data_handler.load_dataset(config['dataset2']['dir_path'])
+        print("-----Datasets loaded-----")
 
         feature = Featureprocessor(config)
-        summary_df = feature.drop_system_columns(summary_df)
-        summary_df = feature.drop_catagorical_data(summary_df)
-        print("loaded")
-        # '''Select'''
-        location_df= feature.include_selective_columns(location_df,
-                                                    config['data']['include']['loc_col'])
+        df_1 = feature.process_dataframe(df_1,
+                                         config['dataset1']['exclude']['cat_var'],
+                                         config['dataset1']['exclude']['sys_var'],
+                                         config['dataset1']['include']['inc_var'])
 
-        merged_df = feature.merge_dataframes(summary_df,location_df,
-                                             join_type="left", join_column="msisdn_key")
-        
+        df_2 = feature.process_dataframe(df_2,
+                                         config['dataset2']['exclude']['cat_var'],
+                                         config['dataset2']['exclude']['sys_var'],
+                                         config['dataset2']['include']['inc_var'])
+        print("Both Data Frame processed")
+
+        merged_df = feature.merge_dataframes(df_1,df_2,
+                                             join_type=config['merge']['join_type'],
+                                             join_column=config['merge']['join_column'])
+
         DataHandler.download_dataframe(merged_df,
-                                       'dataframe.csv',
-                                       data_handler.config['directory']['output'],
+                                       config['merge']['merge_file'],
+                                       config['download_dir'],
                                        describe=True)
 
         seg_df =  Segmenter.create_segments(merged_df,
