@@ -19,15 +19,16 @@ class RandomForest:
         self.n_estimators = config['model']['n_estimators']
         self.test_size = config['model']['test_size']
         self.random_state = config['model']['random_state']
-        self.file_name = config['output_files']['travel_feature_importance']
+
         self.scaler = StandardScaler()
         self.model = RandomForestClassifier(
             n_estimators=self.n_estimators, random_state=self.random_state
         )
-        self.drop_cols = config['model']['drop_col']
-        self.new_column = config['segment']['seg_col']
-        self.output_dir = config['directory']['output']
+        self.drop_cols = config['model']['drop_var']
+        self.target_var = config['model']['target_var']
+        self.output_dir = config['download_dir']
         self.imp_file = config['model']['feture_imp_file']
+        self.metrics_file = config['model']['metrics_file']
 
 
     def train(self, pd_df: pd.DataFrame) -> None:
@@ -45,8 +46,8 @@ class RandomForest:
 
     def _prepare_data(self, pd_df: pd.DataFrame) -> tuple[pd.DataFrame, pd.Series]:
         """ Prepares the data for training by scaling the features."""
-        feature_var = pd_df.drop(self.drop_cols)
-        target_var = pd_df[self.new_column]
+        feature_var = pd_df.drop(columns= self.drop_cols)
+        target_var = pd_df[self.target_var]
         feature_scaled = self.scaler.fit_transform(feature_var)
         return feature_scaled, target_var
 
@@ -93,6 +94,6 @@ class RandomForest:
         combined_df = pd.concat([metrics_df, class_report_df], axis=0)
 
         DataHandler.download_dataframe(combined_df,
-                                       self.file_name,
+                                       self.metrics_file,
                                        self.output_dir)
         logging.info("Random Forest Models Metrics saved to %s",file_path)

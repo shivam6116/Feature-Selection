@@ -48,7 +48,7 @@ def main():
         Segmenter.save_segment_stats(seg_df, config)
 
         # ML Part
-        rf_model = RandomForest(data_handler.config)
+        rf_model = RandomForest(config)
         rf_model.train(merged_df)
 
 

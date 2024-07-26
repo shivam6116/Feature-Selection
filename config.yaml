@@ -38,15 +38,6 @@ segment:
   non_seg_corr: "Non_Travel_corr_matrix.csv"
   non_seg_var: "Non_Travel_segment_var.csv"
 
-output_files:
-    pd_summary: "pd_summary.csv"
-    travel_segment_summary: "Travel_segment_summary.csv"
-    travel_segment_var: "Travel_segment_var.csv"
-    travel_corr_matrix: "Travel_corr_matrix.csv"
-    non_travel_segment_summary: "Non_Travel_segment_summary.csv"
-    non_travel_segment_var: "Non_Travel_segment_var.csv"
-    non_travel_corr_matrix: "Non_Travel_corr_matrix.csv"
-    travel_feature_importance: "Travel_featureimp.csv"
 
 feature_ranking:
   num_sample: 1
@@ -57,6 +48,8 @@ model:
   n_estimators: 100
   test_size: 0.3
   random_state: 42
-  drop_col: ['HighTraveller', 'avg_site_dist_day_night', 'location_diversity_index']
+  target_var: 'IrregularRecharge'
+  drop_var: ['RechargeEvents', 'Inc_Out_Ratio']
   feture_imp_file: 'featureimp.csv'
+  metrics_file: 'metrics.csv'
 
