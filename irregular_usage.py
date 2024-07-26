@@ -45,7 +45,7 @@ def main():
                                             config['segment']['seg_col'],
                                             config['segment']['quantile1'],
                                             config['segment']['quantile2'])
-        Segmenter.save_segment_stats(seg_df, data_handler.config)
+        Segmenter.save_segment_stats(seg_df, config)
 
         # ML Part
         rf_model = RandomForest(data_handler.config)

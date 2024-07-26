@@ -33,18 +33,29 @@ class Segmenter:
         rslt_segment = df.query(f"{seg_col}==1")
 
         DataHandler.download_dataframe(rslt_segment,
-                                       config['output_files']['travel_segment_summary'],
-                                       config['directory']['output'],
+                                       config['segment']['rslt_segment'],
+                                       config['download_dir'],
                                        describe=True)
-        rslt_segment.corr().to_csv(config['output_files']['travel_corr_matrix'])
-
-        rslt_segment.var().to_csv(config['output_files']['travel_segment_var'])
+        DataHandler.download_dataframe(rslt_segment.corr(),
+                                       config['segment']['rslt_corr'],
+                                       config['download_dir'])
+        DataHandler.download_dataframe(rslt_segment.var(),
+                                       config['segment']['rslt_var'],
+                                       config['download_dir'])
 
 
         non_segment = df.query(f"{seg_col}==0")
-        non_segment.describe().to_csv(config['output_files']['non_travel_segment_summary'])
-        non_segment.var().to_csv(config['output_files']['non_travel_segment_var'])
-        non_segment.corr().to_csv(config['output_files']['non_travel_corr_matrix'])
+        DataHandler.download_dataframe(non_segment,
+                                       config['segment']['non_segment'],
+                                       config['download_dir'],
+                                       describe=True)
+        DataHandler.download_dataframe(non_segment.corr(),
+                                       config['segment']['non_seg_corr'],
+                                       config['download_dir'])
+        DataHandler.download_dataframe(non_segment.var(),
+                                       config['segment']['non_seg_var'],
+                                       config['download_dir'])
+
 
         return rslt_segment, non_segment
 
