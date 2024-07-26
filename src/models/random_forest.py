@@ -70,13 +70,13 @@ class RandomForest:
         recall = recall_score(y_test, y_pred, average='binary')
         f1 = f1_score(y_test, y_pred, average='binary')
         accuracy = accuracy_score(y_test, y_pred)
-        
-        logging.info(f'Precision: {precision:.2f}')
-        logging.info(f'Recall: {recall:.2f}')
-        logging.info(f'F1 Score: {f1:.2f}')
-        logging.info(f'Accuracy: {accuracy:.2f}')
+
+        logging.info('Precision: %.2f', precision)
+        logging.info('Recall: %.2f', recall)
+        logging.info('F1 Score: %.2f', f1)
+        logging.info('Accuracy: %.2f', accuracy)
         logging.info('\nClassification Report:')
-        logging.info('\n' + classification_report(y_test, y_pred))
+        logging.info('\n%s', classification_report(y_test, y_pred))
 
 
     def save_metrics_to_csv(self, precision: float, recall: float, f1: float, accuracy: float,
@@ -95,4 +95,4 @@ class RandomForest:
         DataHandler.download_dataframe(combined_df,
                                        self.file_name,
                                        self.output_dir)
-        logging.info(f"Metrics saved to {file_path}")
+        logging.info("Random Forest Models Metrics saved to %s",file_path)
