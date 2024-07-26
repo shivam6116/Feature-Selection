@@ -28,7 +28,7 @@ def main():
                                          config['dataset2']['exclude']['cat_var'],
                                          config['dataset2']['exclude']['sys_var'],
                                          config['dataset2']['include']['inc_var'])
-        print("Both Data Frame processed")
+        print("----Both Data Frame processed----")
 
         merged_df = feature.merge_dataframes(df_1,df_2,
                                              join_type=config['merge']['join_type'],
@@ -38,6 +38,7 @@ def main():
                                        config['merge']['merge_file'],
                                        config['download_dir'],
                                        describe=True)
+        print("----Dataframe merged & Downloaded----")
 
         seg_df =  Segmenter.create_segments(merged_df,
                                             config['segment']['dist_col'],
@@ -46,11 +47,11 @@ def main():
                                             config['segment']['quantile1'],
                                             config['segment']['quantile2'])
         Segmenter.save_segment_stats(seg_df, config)
-
+        print("----Segmentation Done & Downloaded----")
         # ML Part
         rf_model = RandomForest(config)
         rf_model.train(merged_df)
-
+        print("----Training Done & Metrics Calculated----")
 
 
     except Exception as e:

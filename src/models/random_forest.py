@@ -33,22 +33,28 @@ class RandomForest:
 
     def train(self, pd_df: pd.DataFrame) -> None:
         """ Trains the Random Forest Classifier and evaluates its performance."""
+
         X, y = self._prepare_data(pd_df)
+        print("Data prepared for training")
         x_train, x_test, y_train, y_test = train_test_split(
             X, y, test_size=self.test_size, random_state=self.random_state
         )
 
         self.model.fit(x_train, y_train)
+        print("Model training completed")
         self._save_feature_importance(pd_df.columns.drop(self.drop_cols))
 
         y_pred = self.model.predict(x_test)
+        print("Model predictions completed")
         self._evaluate_model(y_test, y_pred)
 
     def _prepare_data(self, pd_df: pd.DataFrame) -> tuple[pd.DataFrame, pd.Series]:
         """ Prepares the data for training by scaling the features."""
-        feature_var = pd_df.drop(columns= self.drop_cols)
+
+        feature_var = pd_df.drop(columns=self.drop_cols)
         target_var = pd_df[self.target_var]
         feature_scaled = self.scaler.fit_transform(feature_var)
+        logging.info("Data scaling completed")
         return feature_scaled, target_var
 
     def _save_feature_importance(self, feature_names: pd.Index) -> None:
@@ -62,8 +68,7 @@ class RandomForest:
         DataHandler.download_dataframe(importance_df,
                                        self.imp_file,
                                        self.output_dir)
-        logging.info("Feature importances saved to %s ",self.imp_file)
-
+        logging.info("Feature importances saved to %s", self.imp_file)
 
     def _evaluate_model(self, y_test: pd.Series, y_pred: pd.Series) -> None:
         """ Evaluates the model and prints the metrics. """
@@ -79,6 +84,7 @@ class RandomForest:
         logging.info('\nClassification Report:')
         logging.info('\n%s', classification_report(y_test, y_pred))
 
+        self.save_metrics_to_csv(precision, recall, f1, accuracy, y_test, y_pred, self.metrics_file)
 
     def save_metrics_to_csv(self, precision: float, recall: float, f1: float, accuracy: float,
                             y_test: pd.Series, y_pred: pd.Series, file_path: str) -> None:
@@ -96,4 +102,4 @@ class RandomForest:
         DataHandler.download_dataframe(combined_df,
                                        self.metrics_file,
                                        self.output_dir)
-        logging.info("Random Forest Models Metrics saved to %s",file_path)
+        logging.info("Random Forest Model Metrics saved to %s", file_path)
