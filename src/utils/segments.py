@@ -68,5 +68,4 @@ class Segmenter:
                                        config['segment']['non_seg_var'],
                                        config['download_dir'])
 
-        config['jhjhkjk']
         return rslt_segment, non_segment
