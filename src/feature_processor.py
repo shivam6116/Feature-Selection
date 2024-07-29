@@ -8,10 +8,6 @@ from src.s_rank.FeatureRanker import SRANK
 
 class Featureprocessor:
     '''Preprocessor Class'''
-    def __init__(self, config):
-        self.num_sample = config['feature_ranking']['num_sample']
-        self.sample_size = config['feature_ranking']['sample_size']
-        self.var_type = config['feature_ranking']['var_type']
 
     def process_dataframe(self, df:pd.DataFrame, cat_var:list,
                           sys_var:list, inc_var:list )->pd.DataFrame:
@@ -75,23 +71,25 @@ class Featureprocessor:
 
         return merged_df
 
-    def rank_features(self, df):
+    def rank_features(self, df,features:list, params:dict):
         '''Ranks the features using SRANK and saves it to a csv'''
-        cat_var = None
-        # pd_df= df[['VoiceRev', 'DataRev', 'DataUsageMb', 'RechargeAmt','MomoBalance',
-        # 'RechargeEvents' ,'CallDuration','age' ]]
+        df = df[features]
+
+        if len(params['discrete_var_list']) == 0:
+            cat_list = None
 
         srank = SRANK()
         rank = srank.apply(df_big=df,
-                           vars_type=self.var_type,
-                           discrete_var_list=cat_var,
-                           clean_bool=False,
-                           rescale_bool=False,
-                           N_SAMPLE=self.num_sample,
-                           SAMPLE_SIZE=self.sample_size)
+                           vars_type= params['var_type'],
+                           discrete_var_list= cat_list,
+                           clean_bool= params['clean_bool'],
+                           rescale_bool= params['rescale_bool'],
+                           N_SAMPLE= params['num_sample'],
+                           SAMPLE_SIZE= params['sample_size'])
 
         info_series = rank.info.squeeze()
         feature_list = rank.rank.tolist()
         df_feat = pd.DataFrame({'feature': feature_list, 'importance': info_series})
-        df_feat.to_csv('feature_importance.csv', index=False)
+
         logging.info("Ranked features and saved to feature_importance.csv")
+        return df_feat

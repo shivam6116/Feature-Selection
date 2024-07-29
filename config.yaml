@@ -46,9 +46,19 @@ segment:
 
 
 feature_ranking:
-  num_sample: 1
-  sample_size: 50
-  var_type: mixed
+  features: ['VoiceRev', 'DataRev', 'DataUsageMb', 'RechargeAmt','MomoBalance']
+  params:
+    num_sample: 1
+    sample_size: 50
+    var_type: continous
+    discrete_var_list: []
+    clean_bool: False
+    rescale_bool: False
+
+  corr_file: "feature_ranking.csv"
+  var_file: "feature_var.csv"
+  rank_file: "feature_ranking.csv"
+
 
 model:
   n_estimators: 100
