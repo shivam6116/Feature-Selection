@@ -41,11 +41,12 @@ def main():
         print("----Dataframe merged & Downloaded----")
 
         seg_df =  Segmenter.create_segments(merged_df,
-                                            config['segment']['dist_col'],
-                                            config['segment']['div_col'],
+                                            config['segment']['variables']['dist_col'],
+                                            config['segment']['variables']['div_col'],
+                                            config['segment']['criteria'],
                                             config['segment']['seg_col'],
-                                            config['segment']['quantile1'],
-                                            config['segment']['quantile2'])
+                                            config['segment']['variables']['quantile1'],
+                                            config['segment']['variables']['quantile2'])
         Segmenter.save_segment_stats(seg_df, config)
         print("----Segmentation Done & Downloaded----")
         # ML Part
