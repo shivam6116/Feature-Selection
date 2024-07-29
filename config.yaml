@@ -26,17 +26,23 @@ merge:
   merge_file: "merged_dataframe.csv"
 
 segment:
-  dist_col: "TotalRevenue_y"
-  quantile1: 0.75
-  div_col: "BalanceDaily_y"
-  quantile2: 0.75
   seg_col: "IrregularRecharge"
-  rslt_segment: "Travel_segment_summary.csv"
-  rslt_corr: "Travel_corr_matrix.csv"
-  rslt_var: "Travel_segment_var.csv"
-  non_segment: "Non_Travel_segment_summary.csv"
-  non_seg_corr: "Non_Travel_corr_matrix.csv"
-  non_seg_var: "Non_Travel_segment_var.csv"
+  variables:
+    dist_col: "TotalRevenue_y"
+    quantile1: 0.75
+    div_col: "BalanceDaily_y"
+    quantile2: 0.75
+  
+  criteria:
+    first_operator: ">="
+    second_operator: ">="
+
+  rslt_segment: "Travel_segment_summary1.csv"
+  rslt_corr: "Travel_corr_matrix1.csv"
+  rslt_var: "Travel_segment_var1.csv"
+  non_segment: "Non_Travel_segment_summary1.csv"
+  non_seg_corr: "Non_Travel_corr_matrix1.csv"
+  non_seg_var: "Non_Travel_segment_var1.csv"
 
 
 feature_ranking:
