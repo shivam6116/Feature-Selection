@@ -28,7 +28,7 @@ def main():
 
         start_time = timeit.default_timer()
         DataHandler.download_dataframe(num_df.corr(),
-                                       'panda_corr_matrix.csv',
+                                       config['feature_ranking']['corr_file'],
                                        config['download_dir'],
                                        describe=True)
         end_time = timeit.default_timer()
@@ -37,7 +37,7 @@ def main():
         # Scale data, calculate variance and save to csv
         num_df = preprocessor.scale_data(num_df)
         DataHandler.download_dataframe(num_df.var(),
-                                       'var.csv',
+                                       config['feature_ranking']['var_file'],
                                        config['download_dir']
                                        )
         print("Correlation and variance calculated")
@@ -46,7 +46,7 @@ def main():
                                             config['feature_ranking']['features'],
                                             config['feature_ranking']['params'])
         DataHandler.download_dataframe(df_feat,
-                                       'var.csv',
+                                       config['feature_ranking']['rank_file'],
                                        config['download_dir'],
                                        describe=False)
         print("Feature ranking completed")
