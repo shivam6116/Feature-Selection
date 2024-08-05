@@ -27,15 +27,6 @@ merge:
 
 segment:
   seg_col: "IrregularRecharge"
-  variables:
-    dist_col: "TotalRevenue_y"
-    quantile1: 0.75
-    div_col: "BalanceDaily_y"
-    quantile2: 0.75
-  
-  criteria:
-    first_operator: ">="
-    second_operator: ">="
 
   rslt_segment: "Travel_segment_summary1.csv"
   rslt_corr: "Travel_corr_matrix1.csv"

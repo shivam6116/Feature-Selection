@@ -40,13 +40,7 @@ def main():
                                        describe=True)
         print("----Dataframe merged & Downloaded----")
 
-        seg_df =  Segmenter.create_segments(merged_df,
-                                            config['segment']['variables']['dist_col'],
-                                            config['segment']['variables']['div_col'],
-                                            config['segment']['criteria'],
-                                            config['segment']['seg_col'],
-                                            config['segment']['variables']['quantile1'],
-                                            config['segment']['variables']['quantile2'])
+        seg_df =  Segmenter.create_segments(merged_df, config['segment']['seg_col'])
         Segmenter.save_segment_stats(seg_df, config)
         print("----Segmentation Done & Downloaded----")
         # ML Part
