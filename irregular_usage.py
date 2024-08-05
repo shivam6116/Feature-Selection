@@ -18,7 +18,7 @@ def main():
         df_2 = data_handler.load_dataset(config['dataset2']['dir_path'])
         print("-----Datasets loaded-----")
 
-        feature = Featureprocessor(config)
+        feature = Featureprocessor()
         df_1 = feature.process_dataframe(df_1,
                                          config['dataset1']['exclude']['cat_var'],
                                          config['dataset1']['exclude']['sys_var'],
@@ -60,4 +60,5 @@ def main():
         raise
 
 if __name__ == "__main__":
+    print("----Irregular Usage----")
     main()
