@@ -83,4 +83,4 @@ class Segmenter:
 
         pd_df[seg_col] = np.where((pd_df['TotalRevenue_y'] >= commuteDist75th) & (pd_df['BalanceDaily_y'] >= commuteDiv75th),1,0)
 
-        return merged_df
+        return pd_df
