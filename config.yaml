@@ -4,36 +4,28 @@ logging:
   level: INFO
   filename: logs/app.log
 
-dataset1:
-  dir_path: "C:\\Users\\Administrator\\Desktop\\Project\\Feature-Selection\\data_sets"
-  exclude:
-    sys_var: [ 'tac', 'date_of_birth', 'id_expiry_date', 'bucket', 'CrossServiceRatio', 'voice_centric_perc']
-    cat_var: ['voice_day_pref' ,'voice_usage_pattern', 'voice_rev_pattern', 'date_key', 'os_name', 'device_category','hs_make','hs_model', 'edge_ind','activation_date','gen_type','gender','activated_via','tariff_code','subscriber_category','subscriber_sub_category']
-  include:
-    inc_var: []
+datasets:
+  - dir_path: "C:\\Users\\Administrator\\Desktop\\Project\\Feature-Selection\\data_sets"
+    exclude:
+      sys_var: [ 'tac', 'date_of_birth', 'id_expiry_date', 'bucket', 'CrossServiceRatio', 'voice_centric_perc']
+      cat_var: ['voice_day_pref' ,'voice_usage_pattern', 'voice_rev_pattern', 'date_key', 'os_name', 'device_category','hs_make','hs_model', 'edge_ind','activation_date','gen_type','gender','activated_via','tariff_code','subscriber_category','subscriber_sub_category']
+    include:
+      inc_var: []
 
-dataset2:
-  dir_path: "C:\\Users\\Administrator\\Desktop\\Project\\Feature-Selection\\data_sets\\location"
-  exclude:
-    sys_var: []
-    cat_var: []
-  include:
-    inc_var: ['msisdn_key', 'VoiceRev', 'DataRev', 'TotalRevenue', 'VoiceOutMins', 'DataUsageMb', 'RechargeAmt', 'VoiceDOU', 'BalanceDaily']
+  - dir_path: "C:\\Users\\Administrator\\Desktop\\Project\\Feature-Selection\\data_sets\\location"
+    exclude:
+      sys_var: []
+      cat_var: []
+    include:
+      inc_var: ['msisdn_key', 'VoiceRev', 'DataRev', 'TotalRevenue', 'VoiceOutMins', 'DataUsageMb', 'RechargeAmt', 'VoiceDOU', 'BalanceDaily']
 
 merge:
   join_type: "left"
   join_column: "msisdn_key"
-  merge_file: "merged_dataframe.csv"
+  merge_file: "merged_dataframe1.csv"
 
 segment:
-  seg_col: "IrregularRecharge"
-
-  rslt_segment: "Travel_segment_summary1.csv"
-  rslt_corr: "Travel_corr_matrix1.csv"
-  rslt_var: "Travel_segment_var1.csv"
-  non_segment: "Non_Travel_segment_summary1.csv"
-  non_seg_corr: "Non_Travel_corr_matrix1.csv"
-  non_seg_var: "Non_Travel_segment_var1.csv"
+  seg_col: "IrregularRecharge1"
 
 
 feature_ranking:
@@ -55,8 +47,8 @@ model:
   n_estimators: 100
   test_size: 0.3
   random_state: 42
-  target_var: 'IrregularRecharge'
+  target_var: 'IrregularRecharge1'
   drop_var: ['RechargeEvents', 'Inc_Out_Ratio']
-  feture_imp_file: 'featureimp.csv'
+  feture_imp_file: 'featureimp1.csv'
   metrics_file: 'metrics.csv'
 

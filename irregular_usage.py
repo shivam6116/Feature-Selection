@@ -14,30 +14,30 @@ def main():
         data_handler = DataHandler(config_path)
         config = data_handler.config
 
-        df_1 = data_handler.load_dataset(config['dataset1']['dir_path'])
-        df_2 = data_handler.load_dataset(config['dataset2']['dir_path'])
-        print("-----Datasets loaded-----")
-
+        datasets = []
         feature = Featureprocessor()
-        df_1 = feature.process_dataframe(df_1,
-                                         config['dataset1']['exclude']['cat_var'],
-                                         config['dataset1']['exclude']['sys_var'],
-                                         config['dataset1']['include']['inc_var'])
+        for dataset_config in config['datasets']:
+            df = data_handler.load_dataset(dataset_config['dir_path'])
+            df = feature.process_dataframe(df,
+                                        dataset_config['exclude']['cat_var'],
+                                        dataset_config['exclude']['sys_var'],
+                                        dataset_config['include']['inc_var'])
+            print("-----Data Frame processed-----")
+            datasets.append(df)
 
-        df_2 = feature.process_dataframe(df_2,
-                                         config['dataset2']['exclude']['cat_var'],
-                                         config['dataset2']['exclude']['sys_var'],
-                                         config['dataset2']['include']['inc_var'])
-        print("----Both Data Frame processed----")
-
-        merged_df = feature.merge_dataframes(df_1,df_2,
-                                             join_type=config['merge']['join_type'],
-                                             join_column=config['merge']['join_column'])
-
-        DataHandler.download_dataframe(merged_df,
+        if datasets:
+            merged_df = datasets[0]
+            for df in datasets[1:]:
+                merged_df = feature.merge_dataframes(merged_df, df,
+                                                    join_type=config['merge']['join_type'],
+                                                    join_column=config['merge']['join_column'])
+            DataHandler.download_dataframe(merged_df,
                                        config['merge']['merge_file'],
                                        config['download_dir'],
                                        describe=True)
+        else:
+            print("No datasets found to process and merge.")
+
         print("----Dataframe merged & Downloaded----")
 
         seg_df =  Segmenter.create_segments(merged_df, config['segment']['seg_col'])
