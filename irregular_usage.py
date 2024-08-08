@@ -4,7 +4,9 @@ import logging
 from src.data_handler import DataHandler
 from src.feature_processor import Featureprocessor
 from src.utils.segments import Segmenter
-from src.models.random_forest import RandomForest
+from src.utils.feature_importance import FeatureImportance
+from src.utils.statistics_analysis import StatisticsAnalysis
+# from src.models.random_forest import RandomForest
 
 def main():
     '''Orchestrates the workflow'''
@@ -44,8 +46,14 @@ def main():
         Segmenter.save_segment_stats(seg_df, config)
         print("----Segmentation Done & Downloaded----")
         # ML Part
-        rf_model = RandomForest(config)
-        rf_model.train(merged_df)
+        # rf_model = RandomForest(config)
+        # rf_model.train(merged_df)
+        feature_importance = FeatureImportance(seg_df, config['models'])
+        top_features, numerical_cols, categorical_cols = feature_importance.calculate_importance()
+
+
+        statistics_analysis = StatisticsAnalysis(seg_df, top_features, numerical_cols, categorical_cols, config['output_files'])
+        statistics_analysis.generate_statistics()
         print("----Training Done & Metrics Calculated----")
 
 
