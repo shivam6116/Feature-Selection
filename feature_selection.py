@@ -11,30 +11,51 @@ def main():
         config_path = 'config.yaml'
 
         data_handler = DataHandler(config_path)
-        df = data_handler.load_dataset()
-        df = data_handler.drop_system_columns(df)
+        config = data_handler.config
+        print("-----Config loaded-----")
+
+        ds_config = config['datasets'][0]
+        df = data_handler.load_dataset(ds_config['dir_path'])
+        print("-----Dataset loaded-----")
 
 
-        preprocessor = Featureprocessor(data_handler.config)
-        num_df = preprocessor.process_numerical_data(df)
+        preprocessor = Featureprocessor()
+        df = preprocessor.drop_system_columns(df,
+                                              ds_config['exclude']['sys_var'])
+        num_df = preprocessor.drop_catagorical_data(df,
+                                                    ds_config['exclude']['cat_var'])
 
+        print("-----Preprocessing completed-----")
 
-        # Calculate correlation matrix
         start_time = timeit.default_timer()
-        correlation_matrix = num_df.corr()
-        correlation_matrix.to_csv('panda_corr_matrix.csv', index=True)
+        DataHandler.download_dataframe(num_df.corr(),
+                                       config['feature_ranking']['corr_file'],
+                                       config['download_dir'],
+                                       describe=True)
         end_time = timeit.default_timer()
         logging.info("Time taken in correlation: %s",(end_time - start_time))
 
         # Scale data, calculate variance and save to csv
         num_df = preprocessor.scale_data(num_df)
-        preprocessor.calculate_variance(num_df)
+        DataHandler.download_dataframe(num_df.var(),
+                                       config['feature_ranking']['var_file'],
+                                       config['download_dir']
+                                       )
+        print("Correlation and variance calculated")
 
-        preprocessor.rank_features(df)
+        df_feat= preprocessor.rank_features(df,
+                                            config['feature_ranking']['features'],
+                                            config['feature_ranking']['params'])
+        DataHandler.download_dataframe(df_feat,
+                                       config['feature_ranking']['rank_file'],
+                                       config['download_dir'],
+                                       describe=False)
+        print("Feature ranking completed")
 
     except Exception as e:
         logging.error("An error occurred: %s",str(e))
         raise
 
 if __name__ == "__main__":
+    print("----Feature Selection----")
     main()

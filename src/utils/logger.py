@@ -8,7 +8,7 @@ class Logger:
         '''Sets up the logging configuration'''
 
         logging.basicConfig(
-            filename=config['logging']['file'],
+            filename=config['logging']['filename'],
             level=config['logging']['level'],
             format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
         )

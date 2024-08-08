@@ -1,36 +1,54 @@
-data:
-  sys_col: ['msisdn_key', 'tac', 'date_of_birth', 'id_expiry_date', 'bucket', 'CrossServiceRatio', 'voice_centric_perc']
-  cat_var: ['voice_day_pref' ,'voice_usage_pattern', 'voice_rev_pattern', 'date_key', 'os_name', 'device_category','hs_make','hs_model', 'edge_ind','activation_date','gen_type','gender','activated_via','tariff_code','subscriber_category','subscriber_sub_category']
-
-output_files:
-    pd_summary: "pd_summary.csv"
-    travel_segment_summary: "Travel_segment_summary.csv"
-    travel_segment_var: "Travel_segment_var.csv"
-    travel_corr_matrix: "Travel_corr_matrix.csv"
-    non_travel_segment_summary: "Non_Travel_segment_summary.csv"
-    non_travel_segment_var: "Non_Travel_segment_var.csv"
-    non_travel_corr_matrix: "Non_Travel_corr_matrix.csv"
-    travel_feature_importance: "Travel_featureimp.csv"
-
-directory:
-  parquet: "C:\\Users\\Administrator\\Desktop\\Project\\Feature-Selection\\data_sets"
-  output: "C:\\Users\\Administrator\\Desktop\\Project\\Feature-Selection\\data_sets\\download"
-  location: "C:\\Users\\Administrator\\Desktop\\Project\\Feature-Selection\\data_sets\\location"
-  
-
-feature_ranking:
-  num_sample: 1
-  sample_size: 50
-  var_type: mixed
+download_dir: "C:\\Users\\Administrator\\Desktop\\Project\\Feature-Selection\\download"
 
 logging:
   level: INFO
   filename: logs/app.log
 
-claude:
-  key: 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
+datasets:
+  - dir_path: "C:\\Users\\Administrator\\Desktop\\Project\\Feature-Selection\\data_sets"
+    exclude:
+      sys_var: [ 'tac', 'date_of_birth', 'id_expiry_date', 'bucket', 'CrossServiceRatio', 'voice_centric_perc']
+      cat_var: ['voice_day_pref' ,'voice_usage_pattern', 'voice_rev_pattern', 'date_key', 'os_name', 'device_category','hs_make','hs_model', 'edge_ind','activation_date','gen_type','gender','activated_via','tariff_code','subscriber_category','subscriber_sub_category']
+    include:
+      inc_var: []
+
+  - dir_path: "C:\\Users\\Administrator\\Desktop\\Project\\Feature-Selection\\data_sets\\location"
+    exclude:
+      sys_var: []
+      cat_var: []
+    include:
+      inc_var: ['msisdn_key', 'VoiceRev', 'DataRev', 'TotalRevenue', 'VoiceOutMins', 'DataUsageMb', 'RechargeAmt', 'VoiceDOU', 'BalanceDaily']
+
+merge:
+  join_type: "left"
+  join_column: "msisdn_key"
+  merge_file: "merged_dataframe1.csv"
+
+segment:
+  seg_col: "IrregularRecharge1"
+
+
+feature_ranking:
+  features: ['VoiceRev', 'DataRev', 'DataUsageMb', 'RechargeAmt','MomoBalance']
+  params:
+    num_sample: 1
+    sample_size: 50
+    var_type: continous
+    discrete_var_list: []
+    clean_bool: False
+    rescale_bool: False
+
+  corr_file: "feature_ranking.csv"
+  var_file: "feature_var.csv"
+  rank_file: "feature_ranking.csv"
+
 
 model:
   n_estimators: 100
   test_size: 0.3
   random_state: 42
+  target_var: 'IrregularRecharge1'
+  drop_var: ['RechargeEvents', 'Inc_Out_Ratio']
+  feture_imp_file: 'featureimp1.csv'
+  metrics_file: 'metrics.csv'
+
