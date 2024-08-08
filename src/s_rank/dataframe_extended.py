@@ -15,6 +15,7 @@ from sklearn import preprocessing
 from scipy import stats
 from scipy.spatial import distance
 from scipy.spatial.distance import pdist, squareform
+from scipy.special import entr
 class dataframe_ext:
     #########################################
     # Attributes: 
@@ -304,6 +305,12 @@ class dataframe_ext:
     # entropy of the dataset                #
     #                                       #
     #########################################
-    def simmatrix_entropy(self):
+    def simmatrix_entropy1(self):
+        '''Old version'''
         entropies = [self.sim_to_entropy(x) for x in np.nditer(self.S)]
         self.E = np.nansum(entropies)/2 #FLOAT
+
+    def simmatrix_entropy(self):
+        '''New version'''
+        entropies = entr(self.S) + entr(1 - self.S)
+        self.E = np.nansum(entropies) / 2
