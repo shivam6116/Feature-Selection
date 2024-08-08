@@ -14,15 +14,16 @@ def main():
         config = data_handler.config
         print("-----Config loaded-----")
 
-        df = data_handler.load_dataset(config['dataset1']['dir_path'])
+        ds_config = config['datasets'][0]
+        df = data_handler.load_dataset(ds_config['dir_path'])
         print("-----Dataset loaded-----")
 
 
         preprocessor = Featureprocessor()
         df = preprocessor.drop_system_columns(df,
-                                              config['dataset1']['exclude']['sys_var'])
+                                              ds_config['exclude']['sys_var'])
         num_df = preprocessor.drop_catagorical_data(df,
-                                                    config['dataset1']['exclude']['cat_var'])
+                                                    ds_config['exclude']['cat_var'])
 
         print("-----Preprocessing completed-----")
 
